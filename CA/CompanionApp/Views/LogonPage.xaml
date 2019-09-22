@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout BackgroundColor="RoyalBlue">
+        <StackLayout  Margin="100">
             <Label Text="Windows Autopilot Companion" FontSize="30" TextColor="White" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" />
             <Label x:Name="results" Text="{Binding Results}" />
             <StackLayout>
