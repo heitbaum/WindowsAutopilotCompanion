@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout  Margin="50">
             <Grid HorizontalOptions="CenterAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />

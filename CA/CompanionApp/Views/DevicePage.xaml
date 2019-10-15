@@ -5,7 +5,7 @@
              Title="{Binding Device.SerialNumber}">
 
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView  Margin="50">
             <StackLayout>
                 <Grid>
                     <Grid.RowDefinitions>

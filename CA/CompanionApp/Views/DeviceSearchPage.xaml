@@ -9,7 +9,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout  Margin="50">
             <Label Text="Serial number:" />
             <Entry x:Name="SerialNumber" Placeholder="" />
             <Button x:Name="Search" Text="Search" Clicked="Search_Clicked"/>

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CompanionApp.Views.UsersPage"
              Title="{Binding Title}">
-    <StackLayout>
+    <StackLayout  Margin="100">
+        <SearchBar x:Name="UsersListSearch" SearchButtonPressed="UsersListSearch_SearchButtonPressed" ></SearchBar>
         <ListView x:Name="UsersListView"
                 ItemsSource="{Binding Users}"
                 VerticalOptions="FillAndExpand"

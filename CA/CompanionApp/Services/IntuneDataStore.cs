@@ -94,8 +94,27 @@ namespace CompanionApp.Services
         public async Task<IEnumerable<User>> SearchUserAsync(string userName)
         {
             List<User> users = new List<User>();
+            var token = ADALAuthentication.Instance.AuthResult.AccessToken;
+            graphClient = new HttpClient();
+            graphClient.DefaultRequestHeaders.Add("Authorization", token);
 
-            return await Task.FromResult(users);
+            //var result = await graphClient.GetStringAsync($"users");
+            var result = await graphClient.GetStringAsync("https://graph.microsoft.com/beta/users?$filter=startswith(userPrincipalName,'"+userName+"')");
+
+            JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
+            JArray JsonValues = jtokenResult["value"] as JArray;
+
+            foreach (var item in JsonValues)
+            {
+                User user = new User();
+                user.DisplayName = item["displayName"].Value<string>();
+                user.Surname = item["givenName"].Value<string>();
+                user.UserPrincipalName = item["userPrincipalName"].Value<string>();
+                users.Add(user);
+            }
+
+            return users;
+            //return await Task.FromResult(users);
         }
 
         public async Task LogOutUser()
