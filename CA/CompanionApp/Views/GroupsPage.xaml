@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CompanionApp.Views.GroupsPage"
+             Title="{Binding Title}">
+    <StackLayout  Margin="100">
+        <SearchBar x:Name="GroupsListSearch" SearchButtonPressed="GroupsListSearch_SearchButtonPressed" ></SearchBar>
+        <ListView x:Name="GroupsListView"
+                ItemsSource="{Binding Groups}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemTapped="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                            <StackLayout Padding="10">
+                            <Label Text="{Binding DisplayName}" 
+                                LineBreakMode="WordWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="Medium" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

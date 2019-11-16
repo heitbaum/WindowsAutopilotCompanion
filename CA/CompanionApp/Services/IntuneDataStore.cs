@@ -222,6 +222,7 @@ namespace CompanionApp.Services
                 JToken aadDevices = JsonConvert.DeserializeObject<JToken>(aadDevice);
                 JArray aadDeviceList = aadDevices["value"] as JArray;
                 device.AzureActiveDirectoryDeviceName = aadDeviceList[0]["displayName"].Value<string>();
+                device.AzureADId = aadDeviceList[0]["id"].Value<string>(); 
             }
             catch
             {
@@ -253,6 +254,20 @@ namespace CompanionApp.Services
                 device.ManagedDeviceName = "";
                 device.ManagedDeviceCategoryId = "";
                 device.ManagedDeviceCategory = "";
+            }
+
+            // find group membership
+            try
+            {
+                var deviceGroup = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/devices/" + device.AzureADId + "/memberOf");
+                JToken deviceGroupToken = JsonConvert.DeserializeObject<JToken>(deviceGroup);
+
+                device.Groups = new List<Group>();
+                
+            }
+            catch
+            {
+                device.Groups = new List<Group>();
             }
 
             return device;
@@ -315,6 +330,53 @@ namespace CompanionApp.Services
             return await Task.FromResult(true);
         }
 
+        public async Task<IEnumerable<Group>> ListAllGroupsAsync()
+        {
+            List<Group> groups = new List<Group>();
+            var token = ADALAuthentication.Instance.AuthResult.AccessToken;
+            graphClient = new HttpClient();
+            graphClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            //var result = await graphClient.GetStringAsync($"users");
+            var result = await graphClient.GetStringAsync("https://graph.microsoft.com/beta/groups");
+
+            JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
+            JArray JsonValues = jtokenResult["value"] as JArray;
+
+            foreach (var item in JsonValues)
+            {
+                Group group = new Group();
+                group.DisplayName = item["displayName"].Value<string>();
+                group.Id = item["id"].Value<string>();
+                groups.Add(group);
+            }
+
+            return groups;
+        }
+
+        public async Task<IEnumerable<Group>> SearchGroupAsync(string groupName)
+        {
+            List<Group> groups = new List<Group>();
+            var token = ADALAuthentication.Instance.AuthResult.AccessToken;
+            graphClient = new HttpClient();
+            graphClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            //var result = await graphClient.GetStringAsync($"users");
+            var result = await graphClient.GetStringAsync("https://graph.microsoft.com/beta/groups?$filter=startswith(displayName,'" + groupName + "')");
+
+            JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
+            JArray JsonValues = jtokenResult["value"] as JArray;
+
+            foreach (var item in JsonValues)
+            {
+                Group group = new Group();
+                group.DisplayName = item["displayName"].Value<string>();
+                group.Id = item["id"].Value<string>();
+                groups.Add(group);
+            }
+
+            return groups;
+        }
     }
 }
 

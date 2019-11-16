@@ -55,6 +55,7 @@
                     <Button x:Name="ChooseUser" Grid.Column="0" Grid.Row="0" Text="Choose new user" Clicked="ChooseUser_Clicked" />
                     <Button x:Name="RemoveUser" Grid.Column="1" Grid.Row="0" Text="Remove assigned user" Clicked="RemoveUser_Clicked" />
                     <Button x:Name="SaveChanges" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="Save changes" Clicked="SaveChanges_Clicked" />
+                    <Button x:Name="AssignGroups" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Assign Groups" Clicked="AssignGroups_Clicked" />
                 </Grid>
             </StackLayout>
         </ScrollView>

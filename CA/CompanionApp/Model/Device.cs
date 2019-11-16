@@ -10,6 +10,7 @@ namespace CompanionApp.Model
     {
         // Static values
         public string SerialNumber { get; set; }
+        public string AzureADId { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string PurchaseOrderNumber { get; set; }
@@ -19,6 +20,8 @@ namespace CompanionApp.Model
         public string ManagedDeviceId { get; set; }
         public string ManagedDeviceName { get; set; }
         public string ZtdId { get; set; }
+
+        public List<Group> Groups { get; set; }
 
         // Changeable through the UI
         public string GroupTag { get; set; }

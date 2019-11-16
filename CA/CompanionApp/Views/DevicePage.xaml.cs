@@ -76,6 +76,18 @@ namespace CompanionApp.Views
             }
         }
 
+        private async void AssignGroups_Clicked(object sender, EventArgs e)
+        {
+            GroupsPage group = new GroupsPage(viewModel.Device.ZtdId);
+            await Navigation.PushModalAsync(group);
+            await group.Completed.Task;
+            if (group.Group != null)
+            {
+                /*viewModel.Device.UserPrincipalName = group.User.UserPrincipalName;
+                viewModel.Device.AddressibleUserName = group.User.DisplayName;*/
+            }
+        }
+
         private void RemoveUser_Clicked(object sender, EventArgs e)
         {
             viewModel.Device.UserPrincipalName = String.Empty;

@@ -8,6 +8,7 @@ namespace CompanionApp.Services
     class MockIntuneDataStore : IIntuneDataStore
     {
         List<User> users;
+        List<Group> groups;
         List<Device> devices;
         List<DeviceCategory> categories;
 
@@ -23,6 +24,10 @@ namespace CompanionApp.Services
             categories.Add(new DeviceCategory() { Id = Guid.Empty.ToString(), DisplayName = "Unassigned" });
             categories.Add(new DeviceCategory() { Id = "1", DisplayName = "One" });
             categories.Add(new DeviceCategory() { Id = "2", DisplayName = "Two" });
+
+            groups = new List<Group>();
+            groups.Add(new Group() { DisplayName = "sg-DefaultProfile", Id = "d08ec511-baa2-40e3-93dd-c846a5c1f311" });
+            groups.Add(new Group() { DisplayName = "sg-KioskProfile", Id = "d08ec511-baa2-40e3-93dd-c846a5c1f312" });
 
             devices = new List<Device>();
             devices.Add(new Device() { SerialNumber = "100", Manufacturer = "Microsoft", Model = "Surface Book", PurchaseOrderNumber = "PO01", GroupTag = "My Group", DeploymentProfile = "User Driven AAD", ManagedDeviceCategory = "One", ManagedDeviceCategoryId = "1", AddressibleUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString(), CategoryList = categories } );
@@ -84,5 +89,14 @@ namespace CompanionApp.Services
             return await Task.FromResult(true);
         }
 
+        public async Task<IEnumerable<Group>> ListAllGroupsAsync()
+        {
+            return await Task.FromResult(groups);
+        }
+
+        public async Task<IEnumerable<Group>> SearchGroupAsync(string groupName)
+        {
+            return await Task.FromResult(groups);
+        }
     }
 }
