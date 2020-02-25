@@ -28,8 +28,10 @@
                     <Label Grid.Column="2" Grid.Row="0" Text="Autopilot Information" FontSize="Medium" />
                     <Label Grid.Column="2" Grid.Row="1" Text="Purchase Order" />
                     <Label Grid.Column="3" Grid.Row="1" Text="{Binding Device.PurchaseOrderNumber}" />
-                    <Label Grid.Column="2" Grid.Row="2" Text="Group Tag" />
-                    <Label Grid.Column="3" Grid.Row="2" Text="{Binding Device.GroupTag}" />
+                    <Label Grid.Column="0" Grid.Row="4" Text="Group Tag" />
+                    <Entry Grid.Column="1" Grid.Row="4" Text="{Binding Device.GroupTag}" />
+                    <Label Grid.Column="0" Grid.Row="5" Text="Device Name" />
+                    <Entry Grid.Column="1" Grid.Row="5" Text="{Binding Device.DeviceName}" />
                     <Label Grid.Column="2" Grid.Row="3" Text="Deployment Profile" />
                     <Label Grid.Column="3" Grid.Row="3" Text="{Binding Device.DeploymentProfile}" />
                     <Label Grid.Column="2" Grid.Row="4" Text="Autopilot Device ID" />
