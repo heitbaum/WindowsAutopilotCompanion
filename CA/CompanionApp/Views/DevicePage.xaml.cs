@@ -83,8 +83,9 @@ namespace CompanionApp.Views
             await group.Completed.Task;
             if (group.Group != null)
             {
-                /*viewModel.Device.UserPrincipalName = group.User.UserPrincipalName;
-                viewModel.Device.AddressibleUserName = group.User.DisplayName;*/
+                List<Group> g = viewModel.Device.Groups;
+                g.Add(group.Group);
+                viewModel.Device.Groups = g;
             }
         }
 

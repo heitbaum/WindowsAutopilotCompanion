@@ -261,9 +261,12 @@ namespace CompanionApp.Services
             {
                 var deviceGroup = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/devices/" + device.AzureADId + "/memberOf");
                 JToken deviceGroupToken = JsonConvert.DeserializeObject<JToken>(deviceGroup);
-
-                device.Groups = new List<Group>();
                 
+                device.Groups = new List<Group>();
+                foreach (var grp in deviceGroupToken.Last.Children().Children())
+                {
+                    device.Groups.Add(new Group() { DisplayName = grp["displayName"].Value<string>(), Id = grp["id"].Value<string>() });
+                }
             }
             catch
             {

@@ -21,8 +21,19 @@ namespace CompanionApp.Model
         public string ManagedDeviceName { get; set; }
         public string ZtdId { get; set; }
 
-        public List<Group> Groups { get; set; }
-
+        private List<Group> groups;
+        public List<Group> Groups {
+            get
+            {
+                return groups;
+            }
+            set
+            {
+                SetProperty(ref groups, value);
+                OnPropertyChanged("GroupsString");
+            }
+        }
+        public string GroupsString { get { return String.Join(", ", Groups); } }
         // Changeable through the UI
         public string GroupTag { get; set; }
 
