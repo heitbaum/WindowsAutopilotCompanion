@@ -41,16 +41,56 @@ namespace CompanionApp.Services
                 }
             }
 
+            // Update group memberships
+            try
+            {
+                foreach(Group g in device.Groups)
+                {
+                    string serializedDeviceId;
+                    serializedDeviceId = "{ \"@odata.id\" : \"https://graph.microsoft.com/beta/directoryObjects/" + device.AzureADId + "\" }";
+                    string stringAssignGroupUrl = string.Format("https://graph.microsoft.com/beta/groups/{0}/members/$ref", g.Id);
+                    var ret = await graphClient.PostAsync(
+                        stringAssignGroupUrl,
+                        new StringContent(serializedDeviceId, Encoding.UTF8, "application/json"));
+                    string content = await ret.Content.ReadAsStringAsync();
+
+                    var resultObj = JsonConvert.DeserializeObject<JToken>(content);
+                    var message = resultObj["error"]["message"];
+                    if (ret.StatusCode == System.Net.HttpStatusCode.BadRequest && !(message.ToString().StartsWith("One or more added object references already exist for the following modified properties"))) 
+                    {
+                        return await Task.FromResult(false);
+                    }
+                }
+
+
+            }
+            catch
+            {
+                return await Task.FromResult(false);
+            }
+
             // Update the other fields
             string serializedItem;
             if (device.UserPrincipalName == String.Empty)
             {
-                var data = new
+                if (String.IsNullOrWhiteSpace(device.DeviceName))
                 {
-                    groupTag = device.GroupTag,
-                    displayName = device.DeviceName
-                };
-                serializedItem = JsonConvert.SerializeObject(data);
+                    var data = new
+                    {
+                        groupTag = device.GroupTag,
+                        displayName = null as object
+                    };
+                    serializedItem = JsonConvert.SerializeObject(data);
+                } else
+                {
+                    var data = new
+                    {
+                        groupTag = device.GroupTag,
+                        displayName = device.DeviceName
+                    };
+                    serializedItem = JsonConvert.SerializeObject(data);
+                }
+                
             }
             else
             { 
@@ -61,6 +101,7 @@ namespace CompanionApp.Services
                     groupTag = device.GroupTag,
                     displayName = device.DeviceName
                 };
+                
                 serializedItem = JsonConvert.SerializeObject(data);
             }
 
@@ -73,6 +114,7 @@ namespace CompanionApp.Services
             {
                 return await Task.FromResult(false);
             }
+            await AssignCategory(device);
 
             return await Task.FromResult(true);
         }
@@ -184,10 +226,10 @@ namespace CompanionApp.Services
 
             JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
             JArray JsonValues = jtokenResult["value"] as JArray;
-
+            IEnumerable<DeviceCategory> categories = await ListAllCategoriesAsync();
             foreach (var item in JsonValues)
             {
-                devices.Add(await ProcessDevice(item));
+                devices.Add(await ProcessDevice(item,categories));
             }
             return devices;
         }
@@ -202,14 +244,14 @@ namespace CompanionApp.Services
             var result = await graphClient.GetStringAsync("https://graph.microsoft.com/beta/deviceManagement/windowsAutopilotDeviceIdentities/" + ztdId + "?$expand=deploymentProfile,intendedDeploymentProfile");
 
             JToken item = JsonConvert.DeserializeObject<JToken>(result);
-
-            Model.Device device = await ProcessDevice(item);
+            IEnumerable<DeviceCategory> categories = await ListAllCategoriesAsync();
+            Model.Device device = await ProcessDevice(item, categories);
             devices.Add(device);
 
             return devices;
         }
 
-        private async Task<Model.Device> ProcessDevice(JToken item)
+        private async Task<Model.Device> ProcessDevice(JToken item,IEnumerable<DeviceCategory> categories)
         {
             Model.Device device = new Model.Device();
             device.SerialNumber = item["serialNumber"].Value<string>();
@@ -222,6 +264,7 @@ namespace CompanionApp.Services
             device.AzureActiveDirectoryDeviceId = item["azureActiveDirectoryDeviceId"].Value<string>();
             device.ManagedDeviceId = item["managedDeviceId"].Value<string>();
             device.ZtdId = item["id"].Value<string>();
+            device.CategoryList = categories;
 
             // Get details from Autopilot device
             var autopilotDetails = await graphClient.GetStringAsync("https://graph.microsoft.com/beta/deviceManagement/windowsAutopilotDeviceIdentities/" + device.ZtdId + "?$expand=deploymentProfile,intendedDeploymentProfile");
@@ -252,11 +295,25 @@ namespace CompanionApp.Services
                 var intuneDevice = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/" + device.ManagedDeviceId);
                 JToken intuneDeviceToken = JsonConvert.DeserializeObject<JToken>(intuneDevice);
                 device.ManagedDeviceName = intuneDeviceToken["deviceName"].Value<string>();
+
+                var intuneDeviceCategory = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/" + device.ManagedDeviceId + "/deviceCategory");
+                JToken intuneCategoryToken = JsonConvert.DeserializeObject<JToken>(intuneDeviceCategory);
+
+                device.ManagedDeviceCategoryId = intuneCategoryToken["id"].Value<string>();
+                // Flaky, look up the name instead of this: device.ManagedDeviceCategory = intuneToken["displayName"].Value<string>();
+                foreach (DeviceCategory cat in categories)
+                {
+                    if (cat.Id == device.ManagedDeviceCategoryId)
+                        device.ManagedDeviceCategory = cat.DisplayName;
+                }
+
             }
             catch
             {
                 // Intune device not found
                 device.ManagedDeviceName = "";
+                device.ManagedDeviceCategoryId = "";
+                device.ManagedDeviceCategory = "";
             }
 
             // find group membership
@@ -282,25 +339,28 @@ namespace CompanionApp.Services
         public async Task<IEnumerable<DeviceCategory>> ListAllCategoriesAsync()
         {
             List<DeviceCategory> categories = new List<DeviceCategory>();
-            var token = ADALAuthentication.Instance.AuthResult.AccessToken;
-            graphClient = new HttpClient();
-            graphClient.DefaultRequestHeaders.Add("Authorization", token);
-
-            var result = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/deviceManagement/deviceCategories");
-
-            JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
-            JArray JsonValues = jtokenResult["value"] as JArray;
-
-            // Add the "Unassigned" category
-            categories.Add(new DeviceCategory() { Id = Guid.Empty.ToString(), DisplayName = "Unassigned" });
-            foreach (var item in JsonValues)
+            try
             {
-                DeviceCategory cat = new DeviceCategory();
-                cat.DisplayName = item["displayName"].Value<string>();
-                cat.Id = item["id"].Value<string>();
-                categories.Add(cat);
-            }
+                var token = ADALAuthentication.Instance.AuthResult.AccessToken;
+                graphClient = new HttpClient();
+                graphClient.DefaultRequestHeaders.Add("Authorization", token);
 
+                var result = await graphClient.GetStringAsync("https://graph.microsoft.com/v1.0/deviceManagement/deviceCategories");
+
+                JToken jtokenResult = JsonConvert.DeserializeObject<JToken>(result);
+                JArray JsonValues = jtokenResult["value"] as JArray;
+
+                // Add the "Unassigned" category
+                categories.Add(new DeviceCategory() { Id = Guid.Empty.ToString(), DisplayName = "Unassigned" });
+                foreach (var item in JsonValues)
+                {
+                    DeviceCategory cat = new DeviceCategory();
+                    cat.DisplayName = item["displayName"].Value<string>();
+                    cat.Id = item["id"].Value<string>();
+                    categories.Add(cat);
+                }
+            }
+            catch { }
             return categories;
         }
 

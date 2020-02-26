@@ -10,7 +10,7 @@ namespace CompanionApp.Services
         List<User> users;
         List<Group> groups;
         List<Device> devices;
-
+        List<DeviceCategory> categories;
         public MockIntuneDataStore()
         {
             users = new List<User>();
@@ -88,6 +88,10 @@ namespace CompanionApp.Services
             return await Task.FromResult(groups);
         }
 
+        public async Task<IEnumerable<DeviceCategory>> ListAllCategoriesAsync()
+        {
+            return await Task.FromResult(categories);
+        }
         public async Task<IEnumerable<Group>> SearchGroupAsync(string groupName)
         {
             return await Task.FromResult(groups);

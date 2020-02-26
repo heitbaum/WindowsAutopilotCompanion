@@ -7,9 +7,9 @@
     <ContentPage.Content>
         <ScrollView  Margin="50">
             <StackLayout>
-                <Grid>
+                <Grid RowSpacing="0" ColumnSpacing="30">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
@@ -37,7 +37,7 @@
                     <Label Grid.Column="2" Grid.Row="4" Text="Autopilot Device ID" />
                     <Label Grid.Column="3" Grid.Row="4" Text="{Binding Device.ZtdId}" />
                     <Label Grid.Column="2" Grid.Row="5" Text="Addressible Name" />
-                    <Entry Grid.Column="3" Grid.Row="5" Text="{Binding Device.AddressibleUserName}" />
+                    <Label Grid.Column="3" Grid.Row="5" Text="{Binding Device.AddressibleUserName}" />
                     
                     <Label Grid.Column="0" Grid.Row="6" Text="AAD Information" FontSize="Medium" />
                     <Label Grid.Column="0" Grid.Row="7" Text="AAD Device ID" />

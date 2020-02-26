@@ -38,6 +38,21 @@ namespace CompanionApp.Model
         public string GroupTag { get; set; }
         public string DeviceName { get; set; }
 
+        // Changeable through external methods (hence the need for OnPropertyChanged)
+        public string localCategory;
+        public string ManagedDeviceCategory
+        {
+            get
+            {
+                return localCategory;
+            }
+            set
+            {
+                SetProperty(ref localCategory, value);
+            }
+        }
+        public string ManagedDeviceCategoryId { get; set; }
+
         private string localAUN;
         public string AddressableUserName
         {
@@ -63,6 +78,8 @@ namespace CompanionApp.Model
                 SetProperty(ref localUPN, value);
             }
         }
+
+        public IEnumerable<DeviceCategory> CategoryList { get; set; }
 
         #region Property change stuff
         protected bool SetProperty<T>(ref T backingStore, T value,

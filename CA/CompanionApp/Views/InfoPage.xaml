@@ -27,6 +27,11 @@
                 <Label Text="Tenant Display Name:" Grid.Row="2" Grid.Column="0" />
                 <Label Text="{Binding Info.TenantDisplayName}" Grid.Row="2" Grid.Column="1" />
             </Grid>
+            <StackLayout Orientation="Vertical" VerticalOptions="Center">
+                <Image x:Name="WelcomeImage" Aspect="AspectFit"></Image>
+                
+            </StackLayout>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

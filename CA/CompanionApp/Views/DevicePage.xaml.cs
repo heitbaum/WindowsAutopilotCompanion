@@ -22,7 +22,17 @@ namespace CompanionApp.Views
 
             viewModel = new DeviceViewModel();
             viewModel.Device = device;
+        
             BindingContext = this.viewModel;
+
+            int i = 0;
+            foreach (var item in device.CategoryList)
+            {
+                if (item.Id == device.ManagedDeviceCategoryId)
+                    this.DeviceCategory.SelectedIndex = i;
+                i++;
+            }
+
         }
 
         private async void SaveChanges_Clicked(object sender, EventArgs e)
@@ -66,5 +76,11 @@ namespace CompanionApp.Views
             viewModel.Device.UserPrincipalName = String.Empty;
             viewModel.Device.AddressableUserName = String.Empty;
         }
+        private void DeviceCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DeviceCategory newCat = (DeviceCategory)DeviceCategory.SelectedItem;
+            viewModel.Device.ManagedDeviceCategoryId = newCat.Id;
+        }
+
     }
 }
