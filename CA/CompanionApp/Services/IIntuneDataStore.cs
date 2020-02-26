@@ -7,7 +7,7 @@ namespace CompanionApp.Services
 {
     public interface IIntuneDataStore
     {
-        Task<bool> UpdateDeviceAsync(Device device);
+        Task<string> UpdateDeviceAsync(Device device);
         Task<IEnumerable<User>> SearchUserAsync(string userName);
         Task<IEnumerable<Device>> SearchDevicesBySerialAsync(string serial);
         Task<IEnumerable<Device>> SearchDevicesByZtdIdAsync(string ztdId);

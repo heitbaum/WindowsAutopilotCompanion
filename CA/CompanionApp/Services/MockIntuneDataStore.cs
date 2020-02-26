@@ -33,9 +33,9 @@ namespace CompanionApp.Services
             devices.Add(new Device() { SerialNumber = "101", Manufacturer = "Microsoft", Model = "Surface Pro 6", PurchaseOrderNumber = "PO02", GroupTag = "My Second Group", DeploymentProfile = "User Driven AAD", AddressableUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString() } );
         }
 
-        public async Task<bool> UpdateDeviceAsync(Device device)
+        public async Task<string> UpdateDeviceAsync(Device device)
         {
-            return await Task.FromResult(true);
+            return await Task.FromResult("OK");
         }
 
         public async Task<IEnumerable<User>> ListAllUsersAsync()

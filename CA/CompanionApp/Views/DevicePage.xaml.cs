@@ -48,10 +48,10 @@ namespace CompanionApp.Views
 
         private async void SaveChanges_Clicked(object sender, EventArgs e)
         {
-            bool returnValue = await viewModel.DataStore.UpdateDeviceAsync(viewModel.Device);
-            if (!returnValue)
+            string returnValue = await viewModel.DataStore.UpdateDeviceAsync(viewModel.Device);
+            if (!returnValue.Equals("OK"))
             {
-                await DisplayAlert("Device settings update", "Device settings update failed.", "OK");
+                await DisplayAlert("Device settings update", "Device settings update failed. " + returnValue, "OK");
             }
 
             await Navigation.PopAsync();
