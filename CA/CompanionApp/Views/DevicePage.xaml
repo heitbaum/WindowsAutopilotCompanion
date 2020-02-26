@@ -68,19 +68,20 @@
                         <Label Grid.Column="1" Grid.Row="2" Text="{Binding Device.DeploymentProfile}" />
                         <Label Grid.Column="0" Grid.Row="3" Text="Autopilot Device ID" IsVisible="{Binding EntryVisible}" />
                         <Label Grid.Column="1" Grid.Row="3" Text="{Binding Device.ZtdId}" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="0" Grid.Row="4" Text="Addressible Name" IsVisible="{Binding EntryVisible}" />
+                        <Label Grid.Column="0" Grid.Row="4" Text="Displayed Enduser Name" IsVisible="{Binding EntryVisible}" />
                         <Entry Grid.Column="1" Grid.Row="4" Text="{Binding Device.AddressibleUserName}" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="0" Grid.Row="5" Text="Intune Information" FontSize="Medium" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="0" Grid.Row="6" Text="Intune Device ID" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="1" Grid.Row="6" Text="{Binding Device.ManagedDeviceId}" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="0" Grid.Row="7" Text="Intune Device Name" />
-                        <Label Grid.Column="1" Grid.Row="7" Text="{Binding Device.ManagedDeviceName}" />
-                        <Label Grid.Column="0" Grid.Row="8" Text="Device Category" IsVisible="{Binding EntryVisible}" VerticalTextAlignment="Center" />
+                        <Label Grid.Column="0" Grid.Row="5" Text="User Principal Name"  />
+                        <Label Grid.Column="1" Grid.Row="5" Text="{Binding Device.UserPrincipalName}" />
+                        <Button x:Name="ChooseUser" Grid.Column="0" Grid.Row="6" Text="Choose new user" Clicked="ChooseUser_Clicked" />
+                        <Button x:Name="RemoveUser" Grid.Column="1" Grid.Row="6" Text="Remove assigned user" Clicked="RemoveUser_Clicked" />
+                        <Label Grid.Column="0" Grid.Row="7" Text="Intune Information" FontSize="Medium" IsVisible="{Binding EntryVisible}" />
+                        <Label Grid.Column="0" Grid.Row="8" Text="Intune Device ID" IsVisible="{Binding EntryVisible}" />
+                        <Label Grid.Column="1" Grid.Row="8" Text="{Binding Device.ManagedDeviceId}" IsVisible="{Binding EntryVisible}" />
+                        <Label Grid.Column="0" Grid.Row="9" Text="Intune Device Name" />
+                        <Label Grid.Column="1" Grid.Row="9" Text="{Binding Device.ManagedDeviceName}" />
+                        <Label Grid.Column="0" Grid.Row="10" Text="Device Category" IsVisible="{Binding EntryVisible}" VerticalTextAlignment="Center" />
                         <Picker x:Name="DeviceCategory" Grid.Column="1" Grid.Row="8" ItemsSource="{Binding Device.CategoryList, Mode=TwoWay}" ItemDisplayBinding="{Binding DisplayName}" SelectedIndexChanged="DeviceCategory_SelectedIndexChanged" IsVisible="{Binding EntryVisible}" />
-                        <Label Grid.Column="0" Grid.Row="9" Text="User Principal Name"  />
-                        <Label Grid.Column="1" Grid.Row="9" Text="{Binding Device.UserPrincipalName}" />
-                        <Button x:Name="ChooseUser" Grid.Column="0" Grid.Row="10" Text="Choose new user" Clicked="ChooseUser_Clicked" />
-                        <Button x:Name="RemoveUser" Grid.Column="1" Grid.Row="10" Text="Remove assigned user" Clicked="RemoveUser_Clicked" />
+
                     </Grid>
                 </StackLayout>
                 <Button x:Name="SaveChanges" Text="Save changes" Clicked="SaveChanges_Clicked" />

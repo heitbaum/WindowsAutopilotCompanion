@@ -29,9 +29,6 @@
             </Grid>
 
             <Image x:Name="WelcomeImage" Aspect="AspectFit"></Image>
-                
-
-            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

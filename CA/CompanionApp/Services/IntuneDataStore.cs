@@ -73,27 +73,17 @@ namespace CompanionApp.Services
             string serializedItem;
             if (device.UserPrincipalName == String.Empty)
             {
-                if (String.IsNullOrWhiteSpace(device.DeviceName))
+                var data = new
                 {
-                    var data = new
-                    {
-                        groupTag = device.GroupTag,
-                        displayName = null as object
-                    };
-                    serializedItem = JsonConvert.SerializeObject(data);
-                } else
-                {
-                    var data = new
-                    {
-                        groupTag = device.GroupTag,
-                        displayName = device.DeviceName
-                    };
-                    serializedItem = JsonConvert.SerializeObject(data);
-                }
-                
+                    groupTag = device.GroupTag,
+                    displayName = device.DeviceName
+                };
+                serializedItem = JsonConvert.SerializeObject(data);
             }
             else
-            { 
+            {
+                if (String.IsNullOrWhiteSpace(device.AddressableUserName))
+                    device.AddressableUserName = device.UserPrincipalName;
                 var data = new
                 {
                     userPrincipalName = device.UserPrincipalName,
