@@ -16,9 +16,20 @@ namespace CompanionApp.Views
 	{
         DeviceViewModel viewModel;
 
+
         public DevicePage(Model.Device device)
 		{
+            
 			InitializeComponent();
+
+            if (this.Width > this.Height)
+            {
+                outerStack.Orientation = StackOrientation.Horizontal;
+            }
+            else
+            {
+                outerStack.Orientation = StackOrientation.Vertical;
+            }
 
             viewModel = new DeviceViewModel();
             viewModel.Device = device;
@@ -45,7 +56,18 @@ namespace CompanionApp.Views
 
             await Navigation.PopAsync();
         }
-
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (width > height)
+            {
+                outerStack.Orientation = StackOrientation.Horizontal;
+            }
+            else
+            {
+                outerStack.Orientation = StackOrientation.Vertical;
+            }
+        }
         private async void ChooseUser_Clicked(object sender, EventArgs e)
         {
             UsersPage user = new UsersPage(viewModel.Device.ZtdId);
@@ -82,5 +104,19 @@ namespace CompanionApp.Views
             viewModel.Device.ManagedDeviceCategoryId = newCat.Id;
         }
 
+        private void ShowUnimportantElements_Clicked(object sender, EventArgs e)
+        {
+            if (viewModel.EntryVisible == true)
+            {
+                viewModel.EntryVisible = false;
+                ShowUnimportantElements.Text = "Show hidden attributes";
+            } else
+            {
+                viewModel.EntryVisible = true;
+                ShowUnimportantElements.Text = "Hide unimportant attributes";
+            }
+            
+        }
+        
     }
 }

@@ -20,5 +20,20 @@ namespace CompanionApp.ViewModel
             get;
             set;
         }
+        private bool _entryVisible = false;
+
+        public bool EntryVisible
+        {
+            get
+            {
+                return _entryVisible;
+            }
+            set
+            {
+                _entryVisible = value;
+                OnPropertyChanged("EntryVisible");
+            }
+        }
+
     }
 }

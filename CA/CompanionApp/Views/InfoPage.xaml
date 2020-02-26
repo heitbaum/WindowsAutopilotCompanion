@@ -10,8 +10,8 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout  Margin="50">
-            <Grid HorizontalOptions="CenterAndExpand">
+        <StackLayout  Margin="50" HorizontalOptions="FillAndExpand">
+            <Grid HorizontalOptions="FillAndExpand"  >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -27,10 +27,10 @@
                 <Label Text="Tenant Display Name:" Grid.Row="2" Grid.Column="0" />
                 <Label Text="{Binding Info.TenantDisplayName}" Grid.Row="2" Grid.Column="1" />
             </Grid>
-            <StackLayout Orientation="Vertical" VerticalOptions="Center">
-                <Image x:Name="WelcomeImage" Aspect="AspectFit"></Image>
+
+            <Image x:Name="WelcomeImage" Aspect="AspectFit"></Image>
                 
-            </StackLayout>
+
             
         </StackLayout>
     </ContentPage.Content>
