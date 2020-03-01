@@ -23,7 +23,13 @@ namespace CompanionApp.Views
 		public InfoPage ()
 		{
 			InitializeComponent ();
-			WelcomeImage.Source = ImageSource.FromResource("CompanionApp.Resources.WPNinjasLogo.png");
+			try
+			{
+				WelcomeImage.Source = ImageSource.FromResource(ResourcePrefix + "Resources.WPNinjasLogo.png");
+			} catch
+			{
+
+			}
 		}
 	}
 }
