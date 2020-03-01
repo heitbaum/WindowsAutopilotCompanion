@@ -25,7 +25,7 @@ namespace CompanionApp.Model
         public List<Group> Groups {
             get
             {
-                return groups;
+                return groups ?? new List<Group>();
             }
             set
             {
@@ -44,7 +44,7 @@ namespace CompanionApp.Model
         {
             get
             {
-                return localCategory;
+                return localCategory ?? "";
             }
             set
             {
@@ -79,7 +79,8 @@ namespace CompanionApp.Model
             }
         }
 
-        public IEnumerable<DeviceCategory> CategoryList { get; set; }
+        private IEnumerable<DeviceCategory> categoryList;
+        public IEnumerable<DeviceCategory> CategoryList { get { return categoryList ?? new List<DeviceCategory>(); } set { categoryList = value; } }
 
         #region Property change stuff
         protected bool SetProperty<T>(ref T backingStore, T value,
