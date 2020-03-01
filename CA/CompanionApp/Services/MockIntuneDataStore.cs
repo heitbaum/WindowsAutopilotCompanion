@@ -26,11 +26,15 @@ namespace CompanionApp.Services
 
             groups = new List<Group>();
             groups.Add(new Group() { DisplayName = "sg-DefaultProfile", Id = "d08ec511-baa2-40e3-93dd-c846a5c1f311" });
-            groups.Add(new Group() { DisplayName = "sg-KioskProfile", Id = "d08ec511-baa2-40e3-93dd-c846a5c1f312" });
+            groups.Add(new Group() { DisplayName = "sg-KioskProfile", Id = "d08ec511-baa2-40e3-93dd-c846a16af312" });
+            groups.Add(new Group() { DisplayName = "sg-SelfEnrollment", Id = "d08ec511-baa2-40e3-93dd-c846a5caf311" });
+            groups.Add(new Group() { DisplayName = "sg-OfficeProfile", Id = "d08ec511-baa2-40e3-93dd-c846a5c1fe12" });
+
+            
 
             devices = new List<Device>();
-            devices.Add(new Device() { SerialNumber = "100", Manufacturer = "Microsoft", Model = "Surface Book", PurchaseOrderNumber = "PO01", GroupTag = "My Group", DeploymentProfile = "User Driven AAD", AddressableUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString() } );
-            devices.Add(new Device() { SerialNumber = "101", Manufacturer = "Microsoft", Model = "Surface Pro 6", PurchaseOrderNumber = "PO02", GroupTag = "My Second Group", DeploymentProfile = "User Driven AAD", AddressableUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString() } );
+            devices.Add(new Device() { SerialNumber = "100", Manufacturer = "Microsoft", Model = "Surface Book", PurchaseOrderNumber = "PO01", GroupTag = "My Group", DeploymentProfile = "User Driven AAD", AddressableUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString(), Groups = new List<Group>() } );
+            devices.Add(new Device() { SerialNumber = "101", Manufacturer = "Microsoft", Model = "Surface Pro 6", PurchaseOrderNumber = "PO02", GroupTag = "My Second Group", DeploymentProfile = "User Driven AAD", AddressableUserName = "Anna Anderson", UserPrincipalName = "anna@contosocm.com", ZtdId = Guid.NewGuid().ToString(), AzureActiveDirectoryDeviceId = Guid.NewGuid().ToString(), ManagedDeviceId = Guid.NewGuid().ToString(), Groups = new List<Group>() } );
         }
 
         public async Task<string> UpdateDeviceAsync(Device device)
