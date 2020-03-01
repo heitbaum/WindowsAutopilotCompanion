@@ -35,5 +35,6 @@ namespace CompanionApp.ViewModel
             }
         }
 
+        public string PageTitle { get { if (String.IsNullOrWhiteSpace(Device.DeviceName)) { return Device.SerialNumber; } else { return String.Format("{0} ({1})", Device.DeviceName,Device.SerialNumber); }; } }
     }
 }
