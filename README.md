@@ -11,6 +11,8 @@ The app supports simple configuration adjustments:
 - Configure the device name (computer name) that should be assigned to the device when it is deployed.
 - Sync Autopilot Service
 - Add Devices to AD Groups
+- Add User search
+- Added ability to press Enter on Device Search
 
 This application leverages Xamarin in order to create a cross-platform app.  This will run on Windows 10, Android, and iOS devices.  
 
