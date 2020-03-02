@@ -33,7 +33,7 @@ namespace CompanionApp.Model
                 OnPropertyChanged("GroupsString");
             }
         }
-        public string GroupsString { get { return String.Join(", ", Groups); } }
+        public string GroupsString { get { return String.Join(Environment.NewLine, Groups); } }
         // Changeable through the UI
         public string GroupTag { get; set; }
         public string DeviceName { get; set; }
