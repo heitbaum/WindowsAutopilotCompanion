@@ -31,14 +31,20 @@ namespace CompanionApp.Views
             }
             else
             {
-                viewModel.SerialNumber = this.SerialNumber.Text;
-                if (viewModel.Devices.Count == 1)
+                try
                 {
-                    await Navigation.PushAsync(new DevicePage(viewModel.Devices[0]));
-                }
-                else
+                    viewModel.SerialNumber = this.SerialNumber.Text;
+                    if (viewModel.Devices.Count == 1)
+                    {
+                        await Navigation.PushAsync(new DevicePage(viewModel.Devices[0]));
+                    }
+                    else
+                    {
+                        await Navigation.PushAsync(new DeviceListPage(viewModel));
+                    }
+                } catch (Exception ex)
                 {
-                    await Navigation.PushAsync(new DeviceListPage(viewModel));
+                    await DisplayAlert("Error on requesting Devices", ex.Message, "OK");
                 }
             }
         }
