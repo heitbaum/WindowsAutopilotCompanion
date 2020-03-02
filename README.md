@@ -1,6 +1,6 @@
 # Windows Autopilot Companion
 
-This repository contains a sample app that can be used to modify the settings of a device as part of a Windows Autopilot white glove process (introduced in Windows 10 1903).  This demonstrates how to make just-in-time configuration adjustments, before pre-provisioning the device with needed apps and settings.
+This repo is an extension of the [Microsoft Companion App Sample app](https://github.com/microsoft/WindowsAutopilotCompanion). Feel free to reuse the code or extend it on your own as long it's compliant with the Microsoft sample app license. 
 
 ## Capabilities
 
