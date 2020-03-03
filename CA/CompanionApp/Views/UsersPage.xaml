@@ -4,6 +4,7 @@
              x:Class="CompanionApp.Views.UsersPage"
              Title="{Binding Title}">
     <StackLayout  Margin="100">
+        <Label Text="Select User" FontSize="Medium" />
         <SearchBar x:Name="UsersListSearch" SearchButtonPressed="UsersListSearch_SearchButtonPressed" ></SearchBar>
         <ListView x:Name="UsersListView"
                 ItemsSource="{Binding Users}"

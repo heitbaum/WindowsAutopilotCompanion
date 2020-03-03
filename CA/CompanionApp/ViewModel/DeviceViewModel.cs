@@ -20,11 +20,21 @@ namespace CompanionApp.ViewModel
             get;
             set;
         }
+        private bool _entryVisible = false;
 
-        public IEnumerable<Model.DeviceCategory> CategoryList
+        public bool EntryVisible
         {
-            get;
-            set;
+            get
+            {
+                return _entryVisible;
+            }
+            set
+            {
+                _entryVisible = value;
+                OnPropertyChanged("EntryVisible");
+            }
         }
+
+        public string PageTitle { get { if (String.IsNullOrWhiteSpace(Device.DeviceName)) { return Device.SerialNumber; } else { return String.Format("{0} ({1})", Device.DeviceName,Device.SerialNumber); }; } }
     }
 }

@@ -1,19 +1,20 @@
 # Windows Autopilot Companion
 
-This repository contains a sample app that can be used to modify the settings of a device as part of a Windows Autopilot white glove process (introduced in Windows 10 1903).  This demonstrates how to make just-in-time configuration adjustments, before pre-provisioning the device with needed apps and settings.
+This repo is an extension of the [Microsoft Companion App Sample app](https://github.com/microsoft/WindowsAutopilotCompanion). Feel free to reuse the code or extend it on your own as long it's compliant with the Microsoft sample app license. 
 
 ## Capabilities
 
 The app supports simple configuration adjustments:
 
 - Add, remove, or change the user assigned to the Windows Autopilot device.
-- Configure the device category assigned to the device.  (Note that this category will be set on the Azure AD device object when the device enrolls in Intune.)
+- Configure the group tag for the device.
+- Configure the device name (computer name) that should be assigned to the device when it is deployed.
+- Sync Autopilot Service
+- Add Devices to AD Groups
+- Add User search
+- Added ability to press Enter on Device Search
 
-Expected future additions (once supported by Windows Autopilot and Intune):
-
-- Editing of the group tag (order ID value) and computer name.
-
-This application leverages Xamarin in order to create a cross-platform app.  This will run on Windows 10, Android, and iOS devices.  For pre-built binaries, see the "Drops" folder.  (These are provided as-is.)
+This application leverages Xamarin in order to create a cross-platform app.  This will run on Windows 10, Android, and iOS devices.  
 
 ## Using
 
@@ -33,16 +34,3 @@ The companion app can be built using Visual Studio 2017 or later, with the Xamar
 
 If publishing the resulting packages to GitHub, create a new folder for the current date under the "Drops" folder, then create Windows and Android folders in that folder.  Copy the *.appxbundle file into the Windows folder and the *.apk file into the Android folder.
 
-# Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

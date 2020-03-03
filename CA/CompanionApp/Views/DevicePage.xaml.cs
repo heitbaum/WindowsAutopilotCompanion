@@ -16,13 +16,26 @@ namespace CompanionApp.Views
 	{
         DeviceViewModel viewModel;
 
+
         public DevicePage(Model.Device device)
 		{
+            
 			InitializeComponent();
+
+            if (this.Width > this.Height)
+            {
+                outerStack.Orientation = StackOrientation.Horizontal;
+            }
+            else
+            {
+                outerStack.Orientation = StackOrientation.Vertical;
+            }
 
             viewModel = new DeviceViewModel();
             viewModel.Device = device;
+        
             BindingContext = this.viewModel;
+
             int i = 0;
             foreach (var item in device.CategoryList)
             {
@@ -30,40 +43,31 @@ namespace CompanionApp.Views
                     this.DeviceCategory.SelectedIndex = i;
                 i++;
             }
+
         }
 
         private async void SaveChanges_Clicked(object sender, EventArgs e)
         {
-            if (viewModel.Device.UserPrincipalName == String.Empty)
+            string returnValue = await viewModel.DataStore.UpdateDeviceAsync(viewModel.Device);
+            if (!returnValue.Equals("OK"))
             {
-                bool returnValue = await viewModel.DataStore.UnAssignUserAsync(new Guid(viewModel.Device.ZtdId));
-                if (!returnValue)
-                {
-                    await DisplayAlert("User Unassigned Status", "User unassignement failed", "OK");
-                }
+                await DisplayAlert("Device settings update", "Device settings update failed. " + returnValue, "OK");
+            }
+
+            await Navigation.PopAsync();
+        }
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (width > height)
+            {
+                outerStack.Orientation = StackOrientation.Horizontal;
             }
             else
             {
-                bool returnValue = await viewModel.DataStore.AssignUserAsync(new Model.User() { DisplayName = viewModel.Device.AddressibleUserName, UserPrincipalName = viewModel.Device.UserPrincipalName }, new Guid(viewModel.Device.ZtdId));
-                if (!returnValue)
-                {
-                    await DisplayAlert("User Assigned Status", "User assignement failed", "OK");
-                }
+                outerStack.Orientation = StackOrientation.Vertical;
             }
-
-            DeviceCategory newCategory = (DeviceCategory)this.DeviceCategory.SelectedItem;
-            if (viewModel.Device.ManagedDeviceCategory != newCategory.DisplayName)
-            {
-                viewModel.Device.ManagedDeviceCategory = newCategory.DisplayName;
-                bool returnValue = await viewModel.DataStore.AssignCategory(viewModel.Device);
-                if (!returnValue)
-                {
-                    await DisplayAlert("Category Assigned Status", "Category assignement failed", "OK");
-                }
-            }
-            await Navigation.PopAsync();
         }
-
         private async void ChooseUser_Clicked(object sender, EventArgs e)
         {
             UsersPage user = new UsersPage(viewModel.Device.ZtdId);
@@ -72,20 +76,47 @@ namespace CompanionApp.Views
             if (user.User != null)
             {
                 viewModel.Device.UserPrincipalName = user.User.UserPrincipalName;
-                viewModel.Device.AddressibleUserName = user.User.DisplayName;
+                viewModel.Device.AddressableUserName = user.User.DisplayName;
+            }
+        }
+
+        private async void AssignGroups_Clicked(object sender, EventArgs e)
+        {
+            GroupsPage group = new GroupsPage(viewModel.Device.ZtdId);
+            await Navigation.PushModalAsync(group);
+            await group.Completed.Task;
+            if (group.Group != null)
+            {
+                List<Group> g = viewModel.Device.Groups;
+                g.Add(group.Group);
+                viewModel.Device.Groups = g;
             }
         }
 
         private void RemoveUser_Clicked(object sender, EventArgs e)
         {
             viewModel.Device.UserPrincipalName = String.Empty;
-            viewModel.Device.AddressibleUserName = String.Empty;
+            viewModel.Device.AddressableUserName = String.Empty;
         }
-
         private void DeviceCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             DeviceCategory newCat = (DeviceCategory)DeviceCategory.SelectedItem;
             viewModel.Device.ManagedDeviceCategoryId = newCat.Id;
         }
+
+        private void ShowUnimportantElements_Clicked(object sender, EventArgs e)
+        {
+            if (viewModel.EntryVisible == true)
+            {
+                viewModel.EntryVisible = false;
+                ShowUnimportantElements.Text = "Show hidden attributes";
+            } else
+            {
+                viewModel.EntryVisible = true;
+                ShowUnimportantElements.Text = "Hide unimportant attributes";
+            }
+            
+        }
+        
     }
 }
