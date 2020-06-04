@@ -5,7 +5,7 @@
              Title="{Binding Title}">
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout  Margin="50">
             <ListView x:Name="deviceListView" ItemsSource="{Binding Devices}" SelectionMode="Single" ItemTapped="ListView_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>

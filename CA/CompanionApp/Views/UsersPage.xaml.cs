@@ -25,6 +25,7 @@ namespace CompanionApp.Views
             this.ztdid = ztdId;
 
             Completed = new System.Threading.Tasks.TaskCompletionSource<bool>();
+
         }
 
         async void OnItemSelected(object sender, ItemTappedEventArgs args)
@@ -56,5 +57,10 @@ namespace CompanionApp.Views
         }
 
         public User User { get; set; }
+
+        private void UsersListSearch_SearchButtonPressed(object sender, EventArgs e)
+        {
+            viewModel.SearchItemsCommand.Execute(UsersListSearch.Text);
+        }
     }
 }

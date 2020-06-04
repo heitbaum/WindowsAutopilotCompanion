@@ -20,7 +20,7 @@ namespace CompanionApp.Views
             {
                 new HomeMenuItem {Id = MenuItemType.Info, Title="Info" },
                 new HomeMenuItem {Id = MenuItemType.DeviceSearch, Title="Device Search" },
-                new HomeMenuItem {Id = MenuItemType.Sync, Title="Sync" },
+                new HomeMenuItem {Id = MenuItemType.Sync, Title="Sync Autopilot" },
                 new HomeMenuItem {Id = MenuItemType.Logout, Title="Logout" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About"}
             };

@@ -9,9 +9,9 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout  Margin="50">
             <Label Text="Serial number:" />
-            <Entry x:Name="SerialNumber" Placeholder="" />
+            <Entry x:Name="SerialNumber" Placeholder="" Completed="Search_Clicked" />
             <Button x:Name="Search" Text="Search" Clicked="Search_Clicked"/>
             <Button x:Name="Scan" Text="Scan QR Code" Clicked="Scan_Clicked" VerticalOptions="EndAndExpand"/>
         </StackLayout>

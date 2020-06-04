@@ -10,7 +10,7 @@
     </MasterDetailPage.Master>
 
     <MasterDetailPage.Detail>
-        <NavigationPage>
+        <NavigationPage Padding="100">
             <x:Arguments>
                 <views:InfoPage />
             </x:Arguments>

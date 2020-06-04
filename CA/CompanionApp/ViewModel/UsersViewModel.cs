@@ -12,6 +12,7 @@ namespace CompanionApp.ViewModel
     {
         public ObservableCollection<User> Users { get; set; }
         public Command LoadItemsCommand { get; set; }
+        public Command SearchItemsCommand { get; set; }
         public Command AssignUserCommand { get; set; }
 
         public UsersViewModel()
@@ -19,6 +20,13 @@ namespace CompanionApp.ViewModel
             Title = " ";
             Users = new ObservableCollection<User>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadUsersCommand());
+            SearchItemsCommand = new Command(async (object arg) => await ExecuteSearchUsersCommand(arg.ToString()));
+        }
+
+        public void SearchUser(String Username)
+        {
+            
+            SearchItemsCommand.Execute(null);
         }
 
        async Task ExecuteLoadUsersCommand()
@@ -47,5 +55,30 @@ namespace CompanionApp.ViewModel
             }
         }
 
+        async Task ExecuteSearchUsersCommand(string Username)
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Users.Clear();
+                IEnumerable<User> users = await DataStore.SearchUserAsync(Username);
+                foreach (var item in users)
+                {
+                    Users.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
     }
 }
